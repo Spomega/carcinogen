@@ -22,7 +22,7 @@ RUN a2ensite app.carcinogen.conf && \
 	a2dissite default-ssl.conf
 
 # Install Composer
-COPY --from=composer:lastest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy the symfony project files to the container
 COPY . /var/www/carcinogen
