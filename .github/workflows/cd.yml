@@ -1,1 +1,68 @@
 name: Build and deploy
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+env:
+  DOCKER_HUB_APP_REPOSITORY: spomega
+  EKS_CLUSTER_NAME: sage-uat
+  AWS_REGION: eu-central-1
+  EKS_NAMESPACE: test-space
+
+jobs:
+  build-and-upload-docker-image:
+    runs-ons: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: QEMU Setup
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Buildx Docker Setup
+        uses: docker/setup-buildx-action@v2
+      -
+        name: DockerHub and Push Image
+        uses: docker/login-action@v2
+        with:
+          username: spomega
+          password: sporej-sporej71387
+      -
+        name: Build And Push Image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: spomega/carcinogen:latest
+
+  deploy-k8s-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    needs:
+      - build-and-upload-docker-image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: {{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+      - name: Deploy to EKS
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: ${{ env.EKS_NAMESPACE }}
+          manifests: |
+            kubernetes/deployment.yaml
+            kubernetes/service.yaml
+      - name: Update deployment status
+        run: |
+          echo "Deployment to EKS Successful"
+
+
