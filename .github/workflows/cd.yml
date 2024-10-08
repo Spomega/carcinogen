@@ -30,8 +30,8 @@ jobs:
         name: DockerHub and Push Image
         uses: docker/login-action@v2
         with:
-          username: spomega
-          password: sporej-sporej71387
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       -
         name: Build And Push Image
         uses: docker/build-push-action@v4
@@ -60,8 +60,8 @@ jobs:
         with:
           namespace: ${{ env.EKS_NAMESPACE }}
           manifests: |
-            kubernetes/deployment.yaml
-            kubernetes/service.yaml
+            k8s/deployment.yaml
+            k8s/service.yaml
       - name: Update deployment status
         run: |
           echo "Deployment to EKS Successful"
