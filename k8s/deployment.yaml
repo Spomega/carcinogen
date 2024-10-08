@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carcinogen-app
+  namespace: test-space
+  labels:
+    app: carcinogen-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carcinogen-app
+
+  template:
+    metadata:
+      labels:
+        app: carcinogen-app
+    spec:
+      containers:
+        - name: carcinogen-app
+          image: spomega/carcinogen:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: carcinogen-app
+  namespace: test-space
+  labels:
+    app: carcinogen-app
+spec:
+  selector:
+    app: carcinogen-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
