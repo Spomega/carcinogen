@@ -15,7 +15,7 @@ class HelloController extends AbstractController
     {
         //return new Response(implode(",", array_splice($this->messages, 0, $limit)));
 
-       return $this->render(
+        return $this->render(
             'hello/index.html.twig',
             [
                 'message' => implode(",", array_splice($this->messages, 0, $limit))
@@ -26,7 +26,7 @@ class HelloController extends AbstractController
     #[Route('/messages/{id<\d+>}', name: 'messages', methods: ['GET'])]
     public function showOne(int $id): Response
     {
-        $message = $id > count($this->messages)-1 ? Sprintf("Message %d not found.", $id) : $this->messages[$id];
+        $message = $id > count($this->messages) - 1 ? Sprintf("Message %d not found.", $id) : $this->messages[$id];
         return $this->render(
             'hello/show_one.html.twig',
             [

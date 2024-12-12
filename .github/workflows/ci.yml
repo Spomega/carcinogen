@@ -23,7 +23,7 @@ jobs:
 
       - name: Code Sniffing PSR12
         run: |
-          vendor/bin/phpcs --standard=ruleset.xml --extensions=php --tab-width=4 -sp src tests
+          vendor/bin/phpcbf --standard=ruleset.xml --extensions=php --tab-width=4 -sp src tests
 
 
 
