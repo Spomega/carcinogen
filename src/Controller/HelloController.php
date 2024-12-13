@@ -8,7 +8,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HelloController extends AbstractController
 {
-    private array $messages = ["Hello New Beginning","hi"];
+    private array $messages = [
+        ['message' => 'Hello', 'created' => '2024/10/12'],
+        ['message' => 'Hi', 'created' => '2024/10/12'],
+        ['message' => 'New Beginning', 'created' => '2023/05/25'],
+    ];
 
     #[Route('/{limit<\d+>?3}', name: 'index')]
     public function index(int $limit): Response
@@ -18,7 +22,8 @@ class HelloController extends AbstractController
         return $this->render(
             'hello/index.html.twig',
             [
-                'message' => implode(",", array_splice($this->messages, 0, $limit))
+                'messages' => $this->messages,
+                'limit' => $limit
             ]
         );
     }

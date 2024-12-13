@@ -2,6 +2,19 @@
 {% block title %}Hello Spo{% endblock %}
 {% block body %}
 <div>
-    <b>{{ message }}</b>
+    {%if messages|length > 0 %}
+    {% for message in messages|slice(0,limit) %}
+    <div>{{ message.message }}</div>
+        <div style="color: grey;">
+            {% if date(message.created) < date('-1year') %}
+                Older than 1 year
+            {% else %}
+                {{ message.created|date('d/m/y') }}
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% else %}
+     There's nothing here yet!.
+    {% endif %}
 </div>
 {% endblock %}
