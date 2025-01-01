@@ -9,11 +9,16 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<MicroPost>
  */
-class MicroPostRepository extends ServiceEntityRepository
+class MicroPostRepository extends ServiceEntityRepository implements MicroPostRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MicroPost::class);
+    }
+
+    public function findAllPost(): array
+    {
+        return $this->findAll();
     }
 
     //    /**
