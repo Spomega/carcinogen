@@ -15,14 +15,15 @@ class MicroPostUseCase
         return $this->microPostRepository->findAllPost();
     }
 
-    public function findPostById(int $id): ?array
+    public function findPostById(MicroPost $microPost): ?array
     {
-        return $this->microPostRepository->findPostById($id);
+        return $this->microPostRepository->findPostById($microPost);
     }
 
     public function savePost(MicroPost $microPost): void
     {
         $this->microPostRepository->savePost($microPost);
+
     }
 
 }

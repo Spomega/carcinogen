@@ -13,16 +13,15 @@ class MicroPostController extends AbstractController
 {
 
     function __construct(private MicroPostUseCase $microPostUseCase) {}
-    #[Route('/micro/post', name: 'app_micro_post',methods: ['GET'])]
+    #[Route('/micro-post', name: 'app_micro_post',methods: ['GET'])]
     public function index(): Response
     {
-        dd($this->microPostUseCase->findAllPost());
         return $this->render('micro_post/index.html.twig', [
-            'controller_name' => 'MicroPostController',
+            'posts' => $this->microPostUseCase->findAllPost(),
         ]);
     }
 
-    #[Route('micro/post', name: 'app_micro_post_create', methods: ['POST'])]
+    #[Route('/micro-post', name: 'app_micro_post_create', methods: ['POST'])]
     public function create(): Response
     {
         $microPost = new MicroPost();
@@ -31,5 +30,13 @@ class MicroPostController extends AbstractController
         $microPost->setCreated(new \DateTime());
         $this->microPostUseCase->savePost($microPost);
         return new Response('Saved new post with id ' . $microPost->getId());
+    }
+
+    #[Route('/micro-post/{post}', name: 'app_micro_post_show', methods: ['GET'])]
+    public function showOne(MicroPost $post): Response
+    {
+        return $this->render('micro_post/show.html.twig', [
+            'post' => $post,
+        ]);
     }
 }
