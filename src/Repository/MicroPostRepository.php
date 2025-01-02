@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\MicroPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MicroPostRepository extends ServiceEntityRepository implements MicroPostRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry,private EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, MicroPost::class);
     }
@@ -45,4 +46,14 @@ class MicroPostRepository extends ServiceEntityRepository implements MicroPostRe
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findPostById(int $id): ?array
+    {
+        return $this->findBy(['id' => $id]);
+    }
+
+    public function savePost(MicroPost $microPost): void
+    {
+        $this->entityManager->persist($microPost);
+        $this->entityManager->flush();
+    }
 }
