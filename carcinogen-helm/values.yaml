@@ -39,6 +39,7 @@ UseAffinityAndTolerance: true
 UseEFSsubPath: true
 
 env:
+  APP_ENV: "dev"
   DB_HOST: mysqlproxy
   DB_DATABASE: spo_db
   DB_USERNAME: spomega

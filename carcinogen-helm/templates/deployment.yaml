@@ -1,68 +1,41 @@
+{{- $valuesRoot:= dict "valuesRoot" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "carcinogen-helm.fullname" . }}
+  name: {{ .Chart.Name }}-app
+  namespace: {{ .Values.namespace }}
   labels:
-    {{- include "carcinogen-helm.labels" . | nindent 4 }}
+    app: {{ .Chart.Name }}
+
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.deployment.minimumReplicaCount }}
+  strategy:
+    type: {{ .Values.deployment.deploymentStrategy }}
+    rollingUpdate:
+      maxSurge: {{ .Values.deployment.maxSurge }}
+      maxUnavailable: {{ .Values.deployment.maxUnavailable }}
   selector:
     matchLabels:
-      {{- include "carcinogen-helm.selectorLabels" . | nindent 6 }}
+        app: {{ .Chart.Name }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        rollme: {{ randAlphaNum 5 | quote }}
       labels:
-        {{- include "carcinogen-helm.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: {{ .Chart.Name }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "carcinogen-helm.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry}}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            - containerPort: {{ .Values.container.port }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            requests:
+                memory: {{ .Values.container.memory.request }}
+                cpu: {{ .Values.container.cpu.request }}
+            limits:
+                memory: {{ .Values.container.memory.limit }}
+                cpu: {{ .Values.container.cpu.limit }}
+
+

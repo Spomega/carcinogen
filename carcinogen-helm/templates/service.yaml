@@ -1,15 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "carcinogen-helm.fullname" . }}
-  labels:
-    {{- include "carcinogen-helm.labels" . | nindent 4 }}
+  name: {{ .Chart.Name }}-service
+  namespace: {{ .Values.namespace }}
 spec:
-  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.container.port }}
+      targetPort: {{ .Values.container.port }}
       protocol: TCP
       name: http
   selector:
-    {{- include "carcinogen-helm.selectorLabels" . | nindent 4 }}
+    app : {{ .Chart.Name }}
