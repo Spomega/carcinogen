@@ -13,9 +13,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MicroPostController extends AbstractController
 {
-
-    function __construct(private MicroPostUseCase $microPostUseCase) {}
-    #[Route('/micro-post', name: 'app_micro_post',methods: ['GET'])]
+    function __construct(private MicroPostUseCase $microPostUseCase)
+    {
+    }
+    #[Route('/micro-post', name: 'app_micro_post', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('micro_post/index.html.twig', [
@@ -64,7 +65,6 @@ class MicroPostController extends AbstractController
         return $this->render('micro_post/add.html.twig', [
             'form' => $form,
         ]);
-
     }
 
     #[Route('/micro-post/{post}/edit', name: 'app_micro_post_edit', methods: ['GET','POST'])]
@@ -88,6 +88,5 @@ class MicroPostController extends AbstractController
         return $this->render('micro_post/add.html.twig', [
             'form' => $form,
         ]);
-
     }
 }
