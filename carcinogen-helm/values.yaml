@@ -47,6 +47,11 @@ ingress:
   pathType: Prefix
   secretName: cert-uat
 
+serviceAccount:
+  create: false
+
+autoscaling:
+  enabled: false
 
 env:
   APP_ENV: "dev"
