@@ -38,13 +38,23 @@ UseAffinityAndTolerance: true
 
 UseEFSsubPath: true
 
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  host: carcinogen.sageinfrastructure.net
+  path: /
+  pathType: Prefix
+  secretName: cert-uat
+
+
 env:
   APP_ENV: "dev"
   DB_HOST: mysqlproxy
   DB_DATABASE: spo_db
   DB_USERNAME: spomega
   DB_PASSWORD: database-password
-  DB_SECRETS: database-secrets
+  DB_SECRETS: app-secrets
 
 
 ## This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/

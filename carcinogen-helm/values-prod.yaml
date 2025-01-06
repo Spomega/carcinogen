@@ -1,4 +1,4 @@
-namespace: test-space
+namespace: prod-space
 
 host: carcinogen.sageinfrastructure.net
 
@@ -39,4 +39,4 @@ env:
   DB_DATABASE: spo_db
   DB_USERNAME: spomega
   DB_PASSWORD: database-password
-  DB_SECRETS: database-secrets
+  DB_SECRETS: app-secrets
