@@ -1,0 +1,42 @@
+namespace: test-space
+
+host: carcinogen.sageinfrastructure.net
+
+deployment:
+  minimumReplicaCount: 2
+  maximumReplicaCount: 5
+  maxSurge: 1
+  maxUnavailable: 0
+  deploymentStrategy: RollingUpdate
+
+service:
+  sessionAffinity: None
+
+image:
+  repository: carcinogen
+  registry: spomega
+  pullPolicy: Always
+  tag: latest
+
+# Docker container
+container:
+  name: carcinogen-app
+  port: 80
+  cpu:
+    limit: 2000m
+    request: 1000m
+  memory:
+    limit: 3000Mi
+    request: 2000Mi
+
+UseAffinityAndTolerance: true
+
+UseEFSsubPath: true
+
+env:
+  APP_ENV: "prod"
+  DB_HOST: mysqlproxy
+  DB_DATABASE: spo_db
+  DB_USERNAME: spomega
+  DB_PASSWORD: database-password
+  DB_SECRETS: database-secrets
