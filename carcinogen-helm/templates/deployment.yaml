@@ -27,6 +27,10 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry}}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          volumeMounts:
+            - name: env-config
+              mountPath: /var/www/carcinogen/.env
+              subPath: .env
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- include "env.vars" $valuesRoot | indent 10 }}
           ports:
@@ -38,5 +42,10 @@ spec:
             limits:
                 memory: {{ .Values.container.memory.limit }}
                 cpu: {{ .Values.container.cpu.limit }}
+
+      volumes:
+        - name: env-config
+          configMap:
+            name: {{ .Chart.Name }}-config
 
 
