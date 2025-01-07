@@ -10,8 +10,8 @@ deployment:
   minimumReplicaCount: 2
   maximumReplicaCount: 5
   maxSurge: 1
-  maxUnavailable: 0
-  deploymentStrategy: RollingUpdate
+  maxUnavailable: 1
+  deploymentStrategy: "RollingUpdate"
 
 service:
   sessionAffinity: None
