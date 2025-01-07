@@ -11,8 +11,10 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 data:
   .env: |-
-    APP_ENV= '%env(string:APP_ENV)%'
-    DATABASE_URL= mysql://'%env(string:DB_USERNAME)%':'%env(string:DB_PASSWORD)%'@'%env(string:DB_HOST)%'/'%env(string:DB_DATABASE)%'?serverVersion=8.0&charset=utf8mb4
+    APP_ENV='%env(string:APP_ENV)%'
+    APP_SECRET='%env(string:APP_SECRET)%'
+    DATABASE_URL=mysql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_DATABASE}?serverVersion=8.0&charset=utf8mb4
+
 
 
 
