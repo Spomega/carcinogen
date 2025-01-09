@@ -32,7 +32,7 @@ COPY . /var/www/carcinogen
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
 # Set proper permissions
-RUN chown -R www-data:www-data /var/www/carcinogen/var
+RUN mkdir -p /var/www/carcinogen/var && chown -R www-data:www-data /var/www/carcinogen/var
 
 # Expose port 80
 EXPOSE 80
