@@ -31,8 +31,13 @@ COPY . /var/www/carcinogen
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
+# Install JavaScript dependencies using Symfony's ImportMap
+RUN php bin/console importmap:install
+
 # Set proper permissions
 RUN mkdir -p /var/www/carcinogen/var && chown -R www-data:www-data /var/www/carcinogen/var
+
+RUN chown -R www-data:www-data /var/www/carcinogen/public
 
 # Expose port 80
 EXPOSE 80
