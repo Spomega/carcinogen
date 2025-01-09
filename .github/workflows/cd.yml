@@ -53,13 +53,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: v3.16.4
-      #      - name: Update kube config
-#        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 #      - name: Deploy to EKS
 #        uses: Azure/k8s-deploy@v1
 #        with:
@@ -67,6 +62,11 @@ jobs:
 #          manifests: |
 #            k8s/deployment.yaml
 #            k8s/service.yaml
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.16.4
 
       - name: Deploy Helm Chart
         run: |
