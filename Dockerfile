@@ -8,9 +8,10 @@ WORKDIR /var/www/carcinogen
 # Install necessary PHP extensions and tools
 RUN apt-get update && apt-get install -y \
 	libpq-dev \
+    libzip-dev \
 	git \
 	unzip \
-	&& docker-php-ext-install pdo pdo_pgsql
+	&& docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 
 # apache config
@@ -28,10 +29,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/carcinogen
 
 # Install PHP dependencies
-RUN composer install --no-interaction --optimize-autoloader
+RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
 # Set proper permissions
-RUN chown -R www-data:www-data /var/www/carcinogen/var
+RUN mkdir -p /var/www/carcinogen/var && chown -R www-data:www-data /var/www/carcinogen/var
 
 # Expose port 80
 EXPOSE 80

@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MicroPostRepository extends ServiceEntityRepository implements MicroPostRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry,private EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry, private EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, MicroPost::class);
     }

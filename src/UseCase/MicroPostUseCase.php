@@ -7,8 +7,9 @@ use App\Repository\MicroPostRepositoryInterface;
 
 class MicroPostUseCase
 {
-
-    function __construct(protected MicroPostRepositoryInterface $microPostRepository){}
+    function __construct(protected MicroPostRepositoryInterface $microPostRepository)
+    {
+    }
 
     public function findAllPost(): array
     {
@@ -23,7 +24,5 @@ class MicroPostUseCase
     public function savePost(MicroPost $microPost): void
     {
         $this->microPostRepository->savePost($microPost);
-
     }
-
 }
