@@ -18,6 +18,8 @@
 
     <div>
         <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white round-md border mt-2">Create Post</button>
+        <input type="hidden" name="_token" value="{{ csrf_token('post_item') }}">
+        {{ dump(form.vars) }}
     </div>
 
 {{ form_end(form) }}
