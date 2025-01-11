@@ -2,13 +2,12 @@
 
 {% block title %}Post - {{ post.title }}{% endblock %}
 
-{% block body %}
-    <h3>{{ post.title }}</h3>
-    <div>{{ post.text }} </div>
-    {% if date(post.created) < date('-1year') %}
-        Older than 1 year
-    {% else %}
-        {{ post.created|date('d/m/y') }}
-    {% endif %}
+{% block bread %}
+    <div class="text-sm text-gray-400 dark:text-gray-500">
+        <a href="{{ path('app_micro_post') }}">Home</a> / {{ post.title }}
+    </div>
+{% endblock %}
 
+{% block body %}
+    {{ include('micro_post/_post.html.twig',{ post: post }) }}
 {% endblock %}

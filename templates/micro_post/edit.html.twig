@@ -2,6 +2,14 @@
 
 {% block title %}Edit Post{% endblock %}
 
+{% block bread %}
+    <div class="text-sm text-gray-400 dark:text-gray-500">
+        <a href="{{ path('app_micro_post') }}">Home</a> / Edit Post
+    </div>
+{% endblock %}
+
+i am in edit
+
 {% block body %}
     {{ include('micro_post/_form.html.twig') }}
 {% endblock %}s
