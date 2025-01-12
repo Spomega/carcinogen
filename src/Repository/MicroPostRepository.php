@@ -46,9 +46,9 @@ class MicroPostRepository extends ServiceEntityRepository implements MicroPostRe
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function findPostById(MicroPost $microPost): ?array
+    public function findPostById(int $id): ?MicroPost
     {
-        return $this->findBy(['id' => $microPost->getId()]);
+        return $this->findOneBy(['id' => $id]);
     }
 
     public function savePost(MicroPost $microPost): void
