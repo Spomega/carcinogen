@@ -13,8 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HelloController extends AbstractController
 {
-
-    function __construct(private UserProfileUseCase $userProfileUseCase){}
+    function __construct(private UserProfileUseCase $userProfileUseCase)
+    {
+    }
     private array $messages = [
         ['message' => 'Hello', 'created' => '2024/9/12'],
         ['message' => 'Hi', 'created' => '2024/10/12'],
