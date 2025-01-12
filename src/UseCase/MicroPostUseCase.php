@@ -23,6 +23,7 @@ class MicroPostUseCase
 
     public function savePost(MicroPost $microPost): void
     {
+
         $this->microPostRepository->savePost($microPost);
     }
 }
