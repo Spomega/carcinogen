@@ -1,0 +1,12 @@
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">There were {{ errors|length }} errors with your submission</strong>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post - Add Comment{% endblock %}
+
+{% block bread %}
+    <div class="text-sm text-gray-400 dark:text-gray-500">
+        <a href="{{ path('app_micro_post_show', {post: post.id}) }}">Home</a> / Add Comment
+    </div>
+{% endblock %}
+
+{% block body %}
+    {{ include('micro_post/_post.html.twig',{ post: post }) }}
+    {{ form_start(form) }}
+    <div>
+        {{ form_errors(form) }}
+    </div>
+
+    <div>
+        {{ form_label(form.comment, 'Please enter the comment', { 'label_attr': {'class' : 'block text-sm text-gray-700 dark:text-gray-300 font-medium'} }) }}
+        {{ form_widget(form.comment, {'attr': {'class':'block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}}) }}
+        {{ form_errors(form.comment) }}
+    </div>
+
+    <div>
+        <button type="submit" class="block w-full shadow-sm border-transparent bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white round-md border mt-2">Add Comment</button>
+        <input type="hidden" name="_token" value="{{ csrf_token('post_item') }}">
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

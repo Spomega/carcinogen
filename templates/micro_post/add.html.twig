@@ -2,6 +2,12 @@
 
 {% block title %}Create New Post{% endblock %}
 
+{% block bread %}
+   <div class="text-sm text-gray-400 dark:text-gray-500">
+      <a href="{{ path('app_micro_post') }}">Home</a> / Create New Post
+   </div>
+{% endblock %}
+
 {% block body %}
    {{ include('micro_post/_form.html.twig') }}
 {% endblock %}

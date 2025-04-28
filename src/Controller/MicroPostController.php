@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\MicroPost;
+use App\Form\CommentType;
 use App\Form\MicroPostType;
+use App\UseCase\CommentUseCase;
 use App\UseCase\MicroPostUseCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,14 +16,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MicroPostController extends AbstractController
 {
-    function __construct(private MicroPostUseCase $microPostUseCase)
-    {
-    }
+    function __construct(private MicroPostUseCase $microPostUseCase,){}
     #[Route('/micro-post', name: 'app_micro_post', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('micro_post/index.html.twig', [
-            'posts' => $this->microPostUseCase->findAllPost(),
+            'posts' => $this->microPostUseCase->findAllPostWithComment()
         ]);
     }
 
@@ -87,6 +88,34 @@ class MicroPostController extends AbstractController
 
         return $this->render('micro_post/add.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/micro-post/{post}/comment', name: 'app_micro_post_comment', methods: ['GET','POST'])]
+    public function addComment(MicroPost $post, Request $request): Response
+    {
+        $form = $this->createForm(CommentType::class, new Comment());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setPosts($post);
+            $this->commentUseCase->saveComment($comment);
+
+            // add a flash message
+            $this->addFlash('success', 'Your comment was added!');
+
+            return  $this->redirectToRoute(
+                'app_micro_post_show',
+                ['post' => $post->getId()]
+            );
+            // Redirect to the show page
+        }
+
+        return $this->render('micro_post/comment.html.twig', [
+            'form' => $form,
+            'post' => $post,
         ]);
     }
 }

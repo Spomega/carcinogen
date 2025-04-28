@@ -3,6 +3,7 @@
 namespace App\UseCase;
 
 use App\Entity\MicroPost;
+use App\Repository\CommentRepositoryInterface;
 use App\Repository\MicroPostRepositoryInterface;
 
 class MicroPostUseCase
@@ -23,6 +24,12 @@ class MicroPostUseCase
 
     public function savePost(MicroPost $microPost): void
     {
+
         $this->microPostRepository->savePost($microPost);
+    }
+
+    public function findAllPostWithComment(): array
+    {
+        return $this->microPostRepository->findAllPostWithComments();
     }
 }
